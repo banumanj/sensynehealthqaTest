@@ -1,0 +1,46 @@
+include:
+  - project: "common/gitlab-ci"
+    ref: v1
+    file: "/xxx/api.yml"
+ 
+stages:
+    - build
+    - test
+    - docker_push
+    - environment_discovery
+    - terraform_validate
+    - terraform_plan
+    - deploy
+    - integration tests
+    - switch
+    - teardown
+ 
+variables:
+  SOLUTION_PATH: "sensynehealthqa.net"
+  DOCKER_REGISTRY: ""
+  DOCKER_IMAGE_NAME: ""
+  PROJECT_NAME: "sensynehealthqa"
+  SONARQUBE_PROJECT_GUID: ""
+  DOCKERFILE_PATH: "./docker/Dockerfile"
+  ECR_REGION: ""
+  SHORTCODE: "sshapi"
+ 
+integration tests:
+    stage: integration tests
+    tags:
+         - xemt-linux
+    only:
+        - integration
+    before_script:
+        - DEPLOY_ENV=$(cat deploy_env)       
+    script:
+        - echo $DEPLOY_ENV
+        - export DEPLOY_ENV
+        - export DEPLOY_HOST=https://integration-${DEPLOY_ENV}-sensynehealthqa.net
+        - cd test/IntegrationTests
+        - mvn clean test site surefire-report:report
+    dependencies:
+        - environment discovery
+    artifacts:
+             paths:
+             - test/IntegrationTests/test-report/          
