@@ -22,4 +22,4 @@ public class ApiConfig {
         return  properties.getProperty(key);
     }
 }
-}
+
