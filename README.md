@@ -1,6 +1,16 @@
 # sensynehealthqaTest
 Sensynehealth Tech Test
 
+
+
+Run this project locally:
+
+Testing the below endpoints :
+POST /product
+DELETE /product/{product_code}
+GET /product/{product_code}
+PUT /product/{product_code}
+
 Get the latest Source Code
 Open Terminal or command line cd to the desired folder where the test automation source code needs to be checkout
 
